@@ -33,8 +33,8 @@
   --sidebar-color: var(--primary-color);
   --on-sidebar-color: var(--on-primary-color);
   --table-border-style: 1px solid var(--primary-color);
-  --default-font-size: 13.5pt;
-  --default-line-height: 1.75rem;
+  --default-font-size: 11pt;
+  --default-line-height: 120%;
   --line-number-width: 4em;
   --numbered-separator-style: 1px solid var(--primary-color);
   --numbered-number-color: var(--on-surface-color);
@@ -1678,7 +1678,7 @@ html.book-style.Letter {
   }
   @bottom-center {
     content: counter(page);
-  }
+  }}
   @footnote {
     float: bottom page;
     border-top: thin solid black;
@@ -2548,3 +2548,17 @@ span.footnote p {
 .landscape {
   page: landscape;
 }
+
+
+
+/* Customization ============================================== */
+body {
+  text-align:justify;
+  hyphens:auto;
+}
+
+h1,h2,h3,h4 {text-align:left;
+hyphens:none}
+
+span.citation:before {content:'['}
+span.citation:after {content:']'}

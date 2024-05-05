@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.1">
     <info>
-        <title>Page numbers in xslTNG printed media</title>
+        <title>Numbering Pages in xslTNG printed media</title>
         <author>
             <personname><firstname>Frank</firstname><surname>Steimke</surname></personname>
             <email>fsteimke.hb@gmail.com</email>
@@ -29,7 +29,7 @@
     </preface>
     <chapter>
         <title>Motivation</title>
-        <para>DocBook <citation>DB 5.2 </citation>is a general purpose XML schema for structured
+        <para>DocBook <citation>DB 5.2 </citation> is a general purpose XML schema for structured
             documents. It's an OASIS Standard. Yo have to transform them into output formats like
             HTML, PDF or ODF before the audience can read them. For this, you have to use
             stylesheets.</para>
@@ -62,7 +62,7 @@
                 xlink:href="https://print-css.rocks/">print-css.rocks</link>. It's not only a
             tutorial, they do also test various CSS Paged Media converters . WeasyPrint (<link
                 xlink:href="https://weasyprint.org/">weasyprint.org/</link>) is a free and open
-            source software for rendering HTML into PDF, so I  gave it a try. The result was
+            source software for rendering HTML into PDF, so I gave it a try. The result was
             promising, but there was a problem: references to pages (for example in the table of
             contents, but also in cross-references) do not show the correct page number, but always
             a 0 (zero). I found Issue 433 which complains about the same problem. It already
@@ -106,7 +106,7 @@
         </section>
         <section>
             <title>Rendering Engines</title>
-            <para>It was tested with these software products: </para>
+            <para>IThe test was performed with these software products: </para>
             <itemizedlist>
                 <listitem>
                     <para><emphasis role="bold">WeasyPrint version 54.1</emphasis> on Ubuntu Linux.
@@ -137,13 +137,14 @@
                 <title>Weasyprint</title>
                 <para>Weasyprint produces a PDF file which looks fine at the first glance, but all
                     page numbers in the ToC are 0 (Zero):</para>
-                <informalfigure>
+                <figure>
+                    <title>ToC with Weasyprint and the original xslTNG CSS</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="tng-css-wp-toc.png"/>
                         </imageobject>
                     </mediaobject>
-                </informalfigure>
+                </figure>
             </section>
             <section>
                 <title>PDF Chemistry crashes with NPE</title>
@@ -177,16 +178,17 @@
     <colophon>
         <title>Why you should read this Book (Colophon)</title>
         <para>It is written in DocBook 5.1. Translated to HTML with xslTNG 2.2.</para>
-        <para>Rendered in PDF with different engines: <orderedlist>
-                <listitem>
-                    <para>Antenna House</para>
-                </listitem>
-                <listitem>
-                    <para>WeasyPrint</para>
-                </listitem>
-                <listitem>
-                    <para>PDF Chemistry (part of the Oxygen XML Suite)</para>
-                </listitem>
-            </orderedlist></para>
+        <para>Rendered in PDF with different engines: </para>
+        <orderedlist>
+            <listitem>
+                <para>Antenna House</para>
+            </listitem>
+            <listitem>
+                <para>WeasyPrint</para>
+            </listitem>
+            <listitem>
+                <para>PDF Chemistry (part of the Oxygen XML Suite)</para>
+            </listitem>
+        </orderedlist>
     </colophon>
 </book>
