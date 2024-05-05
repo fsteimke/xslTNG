@@ -1678,7 +1678,7 @@ html.book-style.Letter {
   }
   @bottom-center {
     content: counter(page);
-  }}
+  }
   @footnote {
     float: bottom page;
     border-top: thin solid black;

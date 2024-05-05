@@ -33,27 +33,21 @@
             documents. It's an OASIS Standard. Yo have to transform them into output formats like
             HTML, PDF or ODF before the audience can read them. For this, you have to use
             stylesheets.</para>
-        <para><emphasis role="italic">DocBook: xslTNG</emphasis> are the next generation of DocBook
-            stylesheets following on from the <link
-                xlink:href="https://github.com/docbook/xslt20-stylesheets"><emphasis role="italic"
-                    >DocBook XSLT 2.0 Stylesheets</emphasis></link> and the <link
-                xlink:href="https://github.com/docbook/xslt10-stylesheets"><emphasis role="italic"
-                    >DocBook XSLT 1.0 Stylesheets</emphasis></link> that preceded them. They
-            transform DocBook XML documents into clean, semantically rich HTML5. A CSS stylesheet
-            suitable for online presentation is included.</para>
-        <para>Producing high quality print output with a paged media capable CSS processor is also
-            supported.This is explained in Section 2.1.4 of <citation>xslTNG Ref</citation>, which
-            says: <quote>At present, the <emphasis role="italic">DocBook xslTNG
-                    Stylesheets</emphasis> are focused on CSS for print output. There’s a
-                customization layer that produces “paged-media-ready” HTML that can be processed
-                with a CSS formatter such as <link
+        <para>DocBook <citation>xslTNG</citation> are the next generation of DocBook stylesheets.
+            They transform DocBook XML documents into clean, semantically rich HTML5. A CSS
+            stylesheet suitable for online presentation is included. Producing high quality print
+            output with a paged media capable CSS processor is also supported.This is explained in
+            Section 2.1.4 of <citation>xslTNG Ref</citation>, which says: <quote>At present, the
+                    <emphasis role="italic">DocBook xslTNG Stylesheets</emphasis> are focused on CSS
+                for print output. There’s a customization layer that produces “paged-media-ready”
+                HTML that can be processed with a CSS formatter such as <link
                     xlink:href="https://xsltng.docbook.org/guide/2.2.0/references#AntennaHouse"
                     >Antenna House</link> or <link
                     xlink:href="https://xsltng.docbook.org/guide/2.2.0/references#Prince"
                     >Prince</link></quote>.</para>
-        <para>Both are commercial products. This creates a high barrier to entry for all those who
-            want to create not only HTML but also PDF with the stylesheets. I am convinced that it
-            is therefore necessary to support CSS paged media processors that are avaliable for free<footnote>
+        <para>Both CSS formatters are commercial products. This creates a high barrier to entry for
+            all those who want to create not only HTML but also PDF. I am convinced that it is
+            therefore necessary to support CSS paged media processors that are avaliable for free<footnote>
                 <para>I do believe that most technical documentation should be avalilable in both
                     formats: Online and PDF.</para>
             </footnote>. </para>
@@ -65,20 +59,22 @@
             source software for rendering HTML into PDF, so I gave it a try. The result was
             promising, but there was a problem: references to pages (for example in the table of
             contents, but also in cross-references) do not show the correct page number, but always
-            a 0 (zero). I found Issue 433 which complains about the same problem. It already
-            identified <code>counter-reset: page</code> as problem (<quote>Apparently weasyprint
-                doesn't like that</quote>), but was closed with an only half-hearted solution:
+            a 0 (zero). I found an <link xlink:href="https://github.com/docbook/xslTNG/issues/433"
+                >Issue 433</link> which complains about the same problem. It already identified
+                <code>counter-reset: page</code> as problem (<quote>Apparently weasyprint doesn't
+                like that</quote>), but was closed with an only half-hearted solution:
                 <code>ounter-reset: none</code> leads to correct page numbers, but the first page
             for content in the book (after the <emphasis>Titlepage</emphasis>, the
                 <emphasis>Table(s) of Content</emphasis> and other stuff like that) does not start
             with page number <quote>1</quote>.</para>
         <para>This led to an error message at weasyprint (<link
                 xlink:href="https://github.com/Kozea/WeasyPrint/issues/2114">Issue 2114</link>). The
-            developer provides a comprehensible explanation and a solution that delivers the desired
-            result with weasyprint. However, the solution does not work properly with Antenna House.
-            This doesn't look like an bug to me. On the contrary, Weasyprint's approach seems to me
-            to be problematic in conjunction with CSS <quote>named pages</quote>, so that I can
-            understand Antenna House's result better than Weasyprint's.</para>
+            maintainer provides a comprehensible explanation and a solution that delivers the
+            desired result with weasyprint. However, the solution does not work properly with
+            Antenna House. This doesn't look like an bug to me. On the contrary, Weasyprint's
+            approach seems to me to be problematic in conjunction with CSS <quote>named
+                pages</quote>, so that I can understand Antenna House's result better than
+            Weasyprint's.</para>
         <para>However, I am anything but an expert in CSS paged media. I am not in a position to
             decide which implementation is right and which is wrong. Therefore, I have decided to
             document both approaches with the corresponding results as well as possible, so that an
@@ -97,12 +93,12 @@
     <chapter>
         <title>Test approach and results</title>
         <section>
-            <title>This Report is the Test-Document</title>
+            <title>The Test-Document (this report)</title>
             <para>This report here serves as the base HTML Document for the test of CSS Sytlesheets
                 and rendering engines. It is written in DocBook 5.1. The xslTNG Stylesheets Version
                 2.2 with <filename>print.xsl</filename> are used to produce the HTML file
-                    <filename>report.html</filename>.</para>
-            <para>Parameter <code>page-style</code> is set to <code>book</code>.</para>
+                    <filename>report.htm,</filename> with parameter <code>page-style</code> set to
+                    <code>book</code>.</para>
         </section>
         <section>
             <title>Rendering Engines</title>
@@ -162,7 +158,7 @@
     </chapter>
     <bibliography>
         <title>Bibliography</title>
-        <bibliomixed><abbrev>db 5.2</abbrev><title>DocBook 5.2: The Definitive Guide</title> by <author>
+        <bibliomixed><abbrev>DB 5.2</abbrev><title>DocBook 5.2: The Definitive Guide</title> by <author>
                 <personname><firstname>Norman</firstname><surname>Walsh</surname></personname>
             </author>. Online available at <link xlink:href="https://tdg.docbook.org/tdg/5.2/"
                 >tdg.docbook.org/tdg/5.2/</link></bibliomixed>
