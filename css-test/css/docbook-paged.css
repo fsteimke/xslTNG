@@ -2560,5 +2560,7 @@ body {
 h1,h2,h3,h4 {text-align:left;
 hyphens:none}
 
-span.citation:before {content:'['}
-span.citation:after {content:']'}
+span.citation:before,
+a.xref-bibliomixed > span.label:before {content:'['}
+span.citation:after,
+a.xref-bibliomixed > span.label:after {content:']'}
