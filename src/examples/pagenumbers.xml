@@ -52,9 +52,11 @@
                     xlink:href="https://xsltng.docbook.org/guide/2.2.0/references#Prince"
                     >Prince</link></quote>.</para>
         <para>Both are commercial products. This creates a high barrier to entry for all those who
-            want to create not only HTML but also PDF with the stylesheets. For the success of
-            xslTNG stylesheets, it is therefore necessary to support products that are associated
-            with no or only low costs. </para>
+            want to create not only HTML but also PDF with the stylesheets. I am convinced that it
+            is therefore necessary to support CSS paged media processors that are avaliable for free<footnote>
+                <para>I do believe that most technical documentation should be avalilable in both
+                    formats: Online and PDF.</para>
+            </footnote>. </para>
         <para>You can find an excellent tutorial that shows how to generate PDF documents from
             XML/HTML using the "CSS Paged Media" approach at <link
                 xlink:href="https://print-css.rocks/">print-css.rocks</link>. It's not only a
