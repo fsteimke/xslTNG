@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" class="no-js A4 book-style">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Page numbers in xslTNG printed media</title>
+        <script>
+            (function (H) {
+                H.className = H.className.replace(/\bno-js\b/, 'js')
+            })(document.documentElement)</script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="https://purl.org/dc/elements/1.1/" rel="schema.dc" />
+        <meta name="dc.modified" content="2024-05-05T11:41:36Z" />
+        <meta name="generator" content="DocBook xslTNG version 2.2.0 / SNAPSHOT / SAXON HE 12.4" />
+        <link href="./css/docbook.css" rel="stylesheet" media="screen" />
+        <link href="./css/docbook-paged.css" rel="stylesheet" media="print" />
+    </head>
+    <body class="book division"><header>
+            <h1>Page numbers in xslTNG printed media</h1>
+            <div class="author">
+                <h3><span class="first-last personname"><span class="firstname">Frank</span>
+                        <span class="surname">Steimke</span></span></h3>
+            </div>
+        </header><main><div class="list-of-titles">
+                <div class="lot toc">
+                    <div class="title">Table of Contents</div>
+                    <ul class="toc">
+                        <li><a href="#R_ded1">Dedication</a></li>
+                        <li><a href="#R_p1">Preface</a></li>
+                        <li><a href="#R_ch1"><span class="label">1</span><span class="sep"
+                                >. </span>Motivation</a></li>
+                        <li><a href="#R_ch2"><span class="label">2</span><span class="sep"
+                                >. </span>Test approach and results</a><ul class="toc">
+                                <li><a href="#R_ch2_s1"><span class="label">1</span><span
+                                            class="sep">. </span>This Report is the
+                                        Test-Document</a></li>
+                                <li><a href="#R_ch2_s2"><span class="label">2</span><span
+                                            class="sep">. </span>Rendering Engines</a></li>
+                            </ul></li>
+                        <li><a href="#R_ch3"><span class="label">3</span><span class="sep"
+                                >. </span>Conclusion</a></li>
+                        <li><a href="#R_bi1">Bibliography</a></li>
+                    </ul>
+                </div>
+            </div><section id="R_ded1" class="component dedication">
+                <header>
+                    <h2>Dedication</h2>
+                </header>
+                <p>An dedication could be placed here</p>
+            </section><section id="R_p1" class="component preface">
+                <header>
+                    <h2>Preface</h2>
+                </header>
+                <p>This book examines the handling of page numbers in CSS printed media. It is both
+                    documentation and its own illustrative material. It is created in DocBook format
+                    and converted to HTML with xslTNG 2.2. It is then rendered to PDF using various
+                    rendering engines. The aim is to illustrate the problems that can occur with
+                    page numbers in the created PDF and how these can be solved.</p>
+                <p>Some of the problematic effects are only recognizable when sections in the
+                    generated PDF contain a page break. For this reason, some sections of this book
+                    are more extensive and detailed than is absolutely necessary. It is expressly
+                    intended to fill pages, because we need page breaks for illustration. Also, it's
+                    the first time for me to have a <code class="tag tag-element">dedication</code>
+                    and a <code class="tag tag-element">colophon</code> in a book. It's only because
+                    I wanted to see them rendered in PDF.</p>
+                <p>This book is translated with DeepL.com from german.</p>
+            </section><section id="R_ch1" class="chapter component">
+                <header>
+                    <h2>Chapter <span class="label">1</span><span class="sep"
+                        >. </span>Motivation</h2>
+                </header>
+                <p>DocBook <span class="citation">DB 5.2 </span>is a general purpose XML schema for
+                    structured documents. It's an OASIS Standard. Yo have to transform them into
+                    output formats like HTML, PDF or ODF before the audience can read them. For
+                    this, you have to use stylesheets.</p>
+                <p><em class="italic">DocBook: xslTNG</em> are the next generation of DocBook
+                    stylesheets following on from the <a
+                        href="https://github.com/docbook/xslt20-stylesheets" class="link"><em
+                            class="italic">DocBook XSLT 2.0 Stylesheets</em></a> and the <a
+                        href="https://github.com/docbook/xslt10-stylesheets" class="link"><em
+                            class="italic">DocBook XSLT 1.0 Stylesheets</em></a> that preceded them.
+                    They transform DocBook XML documents into clean, semantically rich HTML5. A CSS
+                    stylesheet suitable for online presentation is included.</p>
+                <p>Producing high quality print output with a paged media capable CSS processor is
+                    also supported.This is explained in Section 2.1.4 of <a
+                        href="#R_bi1_bibliomixed3" class="xref xref-bibliomixed"><span class="label"
+                                ><span class="abbrev">xslTNG Ref</span></span></a>, which says:
+                        <q>At present, the <em class="italic">DocBook xslTNG Stylesheets</em> are
+                        focused on CSS for print output. There’s a customization layer that produces
+                        “paged-media-ready” HTML that can be processed with a CSS formatter such as
+                            <a href="https://xsltng.docbook.org/guide/2.2.0/references#AntennaHouse"
+                            class="link">Antenna House</a> or <a
+                            href="https://xsltng.docbook.org/guide/2.2.0/references#Prince"
+                            class="link">Prince</a></q>.</p>
+                <p>Both are commercial products. This creates a high barrier to entry for all those
+                    who want to create not only HTML but also PDF with the stylesheets. For the
+                    success of xslTNG stylesheets, it is therefore necessary to support products
+                    that are associated with no or only low costs. </p>
+                <p>You can find an excellent tutorial that shows how to generate PDF documents from
+                    XML/HTML using the "CSS Paged Media" approach at <a
+                        href="https://print-css.rocks/" class="link">print-css.rocks</a>. It's not
+                    only a tutorial, they do also test various CSS Paged Media converters .
+                    WeasyPrint (<a href="https://weasyprint.org/" class="link">weasyprint.org/</a>)
+                    is a free and open source software for rendering HTML into PDF, so I gave it a
+                    try. The result was promising, but there was a problem: references to pages (for
+                    example in the table of contents, but also in cross-references) do not show the
+                    correct page number, but always a 0 (zero). I found Issue 433 which complains
+                    about the same problem. It already identified <code>counter-reset: page</code>
+                    as problem (<q>Apparently weasyprint doesn't like that</q>), but was closed with
+                    an only half-hearted solution: <code>ounter-reset: none</code> leads to correct
+                    page numbers, but the first page for content in the book (after the
+                        <em>Titlepage</em>, the <em>Table(s) of Content</em> and other stuff like
+                    that) does not start with page number <q>1</q>.</p>
+                <p>This led to an error message at weasyprint (<a
+                        href="https://github.com/Kozea/WeasyPrint/issues/2114" class="link">Issue
+                        2114</a>). The developer provides a comprehensible explanation and a
+                    solution that delivers the desired result with weasyprint. However, the solution
+                    does not work properly with Antenna House. This doesn't look like an bug to me.
+                    On the contrary, Weasyprint's approach seems to me to be problematic in
+                    conjunction with CSS <q>named pages</q>, so that I can understand Antenna
+                    House's result better than Weasyprint's.</p>
+                <p>However, I am anything but an expert in CSS paged media. I am not in a position
+                    to decide which implementation is right and which is wrong. Therefore, I have
+                    decided to document both approaches with the corresponding results as well as
+                    possible, so that an optimal solution for the xslTNG stylesheets can be
+                    developed. In addition to Antenna House and Weasyprint, the product <a
+                        href="https://www.oxygenxml.com/chemistry-html-to-pdf-converter.html"
+                        class="link">PDF Chemistry</a> from Syncro Soft will also be examined. It is
+                    part of the Oxygen product family and can be used free of charge by users of the
+                    Oxygen IDE to convert HTML+CSS paged media into PDF. PDF Chemistry is a CSS
+                    Paged Media processor based on the open-source Apache FOP XSL-FO engine. In
+                    other words, in transforms HTML+CSS into <a href="https://www.w3.org/TR/xsl11/"
+                        class="link">XSL Formatting Objects (XSL-FO)</a> which can be rendered into
+                    PDF with the open source <a href="https://xmlgraphics.apache.org/fop/"
+                        class="link">FOP Software from Apache</a>, which also ships with Oxygen.</p>
+            </section><section id="R_ch2" class="chapter component">
+                <header>
+                    <h2>Chapter <span class="label">2</span><span class="sep">. </span>Test approach
+                        and results</h2>
+                </header>
+                <section id="R_ch2_s1" class="section">
+                    <header>
+                        <h2><span class="label">1</span><span class="sep">. </span>This Report is
+                            the Test-Document</h2>
+                    </header>
+                    <p>This report here serves as the base HTML Document for the test of CSS
+                        Sytlesheets and rendering engines. It is written in DocBook 5.1. The xslTNG
+                        Stylesheets Version 2.2 with <code class="filename">print.xsl</code> are
+                        used to produce the HTML file <code class="filename">report.html</code>.</p>
+                </section>
+                <section id="R_ch2_s2" class="section">
+                    <header>
+                        <h2><span class="label">2</span><span class="sep">. </span>Rendering
+                            Engines</h2>
+                    </header>
+                    <p>It was tested with these software products: </p>
+                    <ul class="itemizedlist">
+                        <li><p><strong class="bold">WeasyPrint version 54.1</strong> on Ubuntu
+                                Linux. It is used as</p><div class="pre-wrap"
+                                db-startinglinenumber="1" db-numberoflines="1">
+                                <pre class="language-none numbered programlisting verbatim verblines"><span class="line" db-line="1"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code>weasyprint -s css-file report.html report.pdf</code></span></span>
+</pre>
+                            </div></li>
+                        <li><p><strong class="bold">PDF Chemistry, part of XML Editor 26.0</strong>
+                                on Ubuntu Linux. To use it within Oxygen, I had to define
+                                    <q>transformation scenarios</q> of type <q>XML to PDF
+                                    transformation with CSS</q> which refers the
+                                    <code>css-file</code>. </p></li>
+                        <li><p><strong class="bold">Antenna House Formatter 7.4R1</strong> on
+                                Windows 10. It is used as</p><div class="pre-wrap"
+                                db-startinglinenumber="1" db-numberoflines="1">
+                                <pre class="language-none numbered programlisting verbatim verblines"><span class="line" db-line="1"><span class="ln">  <span class="nsep">|</span></span><span class="ld"><code>ahfcmd.exe -css css-file -d report.html -o report.pdf</code></span></span>
+</pre>
+                            </div></li>
+                    </ul>
+                </section>
+            </section><section id="R_ch3" class="chapter component">
+                <header>
+                    <h2>Chapter <span class="label">3</span><span class="sep"
+                        >. </span>Conclusion</h2>
+                </header>
+            </section><div id="R_bi1" class="bibliography component">
+                <header>
+                    <h2>Bibliography</h2>
+                </header>
+                <p class="bibliomixed">[<span class="abbrev">db 5.2</span>] <cite class="title"
+                        >DocBook 5.2: The Definitive Guide</cite> by <span class="author"><span
+                            class="first-last personname"><span class="firstname">Norman</span>
+                            <span class="surname">Walsh</span></span></span>. Online available at <a
+                        href="https://tdg.docbook.org/tdg/5.2/" class="link"
+                        >tdg.docbook.org/tdg/5.2/</a></p>
+                <p class="bibliomixed">[<span class="abbrev">xslTNG</span>] <cite class="title">
+                        DocBook xslTNG</cite> by <span class="author"><span
+                            class="first-last personname"><span class="firstname">Norman</span>
+                            <span class="surname">Walsh</span></span></span>. Online available at <a
+                        href="https://xsltng.docbook.org/" class="link">xsltng.docbook.org/</a></p>
+                <p id="R_bi1_bibliomixed3" class="bibliomixed">[<span class="abbrev">xslTNG
+                        Ref</span>] <cite class="title">DocBook xslTNG Reference</cite> by <span
+                        class="author"><span class="first-last personname"><span class="firstname"
+                                >Norman</span>
+                            <span class="surname">Walsh</span></span></span>. Online available at <a
+                        href="https://xsltng.docbook.org/guide/" class="link"
+                        >xsltng.docbook.org/guide/</a></p>
+            </div><section id="R_co1" class="colophon component">
+                <header>
+                    <h2>Why you should read this Book (Colophon)</h2>
+                </header>
+                <p>It is written in DocBook 5.1. Translated to HTML with xslTNG 2.2.</p>
+                <p>Rendered in PDF with different engines: <ol class="orderedlist" type="1">
+                        <li><p>Antenna House</p></li>
+                        <li><p>WeasyPrint</p></li>
+                        <li><p>PDF Chemistry (part of the Oxygen XML Suite)</p></li>
+                    </ol></p>
+            </section></main></body>
+</html>
