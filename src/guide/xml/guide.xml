@@ -5,6 +5,7 @@
 <info>
 <?db xlink-style="javascript" page-style="book"?>
 <title>DocBook xslTNG Reference</title>
+  <subtitle>Mit Ergänzungen für die Nutzung in der KoSIT</subtitle>
 <author>
   <personname>
     <firstname>Norman</firstname><surname>Walsh</surname>
@@ -55,6 +56,7 @@ contained herein.</para>
 <xi:include href="ch03b.xml"/> <!-- gentext -->
 <xi:include href="ch04.xml"/> <!-- implementation -->
 <xi:include href="ch05.xml"/> <!-- building  -->
+<xi:include href="kosit.xml"/>  
 <xi:include href="ver2.xml"/>
 <xi:include href="glossary.xml"/>
 <xi:include href="references.xml"/>
