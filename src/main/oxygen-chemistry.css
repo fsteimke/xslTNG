@@ -1,0 +1,30 @@
+body {
+    font-family: Calibri, arial, helvetica, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Calibri Light", roman, 'times new roman', times, serif
+}
+
+p {
+    text-align: justify;
+    font-size: 11pt;
+    hyphens: auto
+}
+
+@page {
+    size: A4 portrait;
+    @bottom-center {
+    content:"Seite " counter(page)
+    }
+}
+
+.toc a {color:inherit}
+.toc a::after {
+  content: leader(dotted) " " target-counter(attr(href), page);
+}
