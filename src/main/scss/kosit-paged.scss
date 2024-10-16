@@ -1,0 +1,11 @@
+/* ======================================================================
+   Layout Änderungen für PDF Dokumente der KoSIT,
+   unabhängig von der Engine zum rendern in PDF.
+====================================================================== */
+
+:root {
+  --symbol-fonts: "Arial Unicode", "Apple Symbols", "Symbol", "Symbola_hint";
+  --body-family: Calibri, FreeSans, "Open Sans", serif;
+  --title-family: "Calibri Light", sans-serif;
+  --mono-family: Consolas, monospace;
+}
