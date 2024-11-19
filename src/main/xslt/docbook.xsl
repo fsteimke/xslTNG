@@ -277,8 +277,9 @@
     <xsl:sequence select="fp:run-transforms($result, $post-processing)"/>
   </xsl:variable>
   
-  <!-- Try to create or perform copy instructions for media files marked by @ghost:sourcefile -->
-  <xsl:if test="$copyinstructions-uri and exists($result//*[@ghost:sourcefile])">
+  <!-- Try to create or perform copy instructions for media files marked by @ghost:sourcefile
+       and / or CSS resources -->
+  <xsl:if test="$copyinstructions-uri">
     <xsl:variable name="current-output-directory" as="xs:string?" select="
         if (current-output-uri()) then
           tokenize(current-output-uri(), '/')[position() lt last()] => string-join('/') => concat('/')
