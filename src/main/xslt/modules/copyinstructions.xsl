@@ -15,7 +15,18 @@
    |   xslTNG extension which help to copy necessary resources to the place where generated HTML expects them.    
    |   Copy instructions are either written to a file or performed if expath file module is availabe.
    |   Frank Steimke fsteimke.hb (at) gmail.com November 2024
-   |======================================================================================================= -->   
+   |======================================================================================================= -->
+
+  <xsl:variable name="vp:css-catalog" as="document-node()?">
+    <xsl:try>
+      <xsl:sequence select="doc($css-catalogfile)"/>
+      <xsl:catch>
+        <xsl:message terminate="no"
+          select="'WARNING: Can''t open CSS cataolg file ' || $css-catalogfile || ': ' || $err:description"
+        />
+      </xsl:catch>
+    </xsl:try>
+  </xsl:variable>
 
 
   <!-- Tries to find the absolute URI for the mediaobjects base directory, that is, the URI
@@ -90,12 +101,22 @@
     <xsl:param name="head" as="element(h:head)?"/>
     <xsl:param name="static-base-uri" as="xs:anyURI"/>
     <xsl:param name="current-output-directory" as="xs:string?"/>
+
     <xsl:variable name="instructions" as="map(xs:anyURI, xs:anyURI)*">
-      <xsl:apply-templates select="$head/h:link[@rel eq 'stylesheet']"
-        mode="mp:stylesheet-copy-instruction">
-        <xsl:with-param name="current-output-directory" select="$current-output-directory"/>
-        <xsl:with-param name="static-base-uri" select="$static-base-uri"/>
-      </xsl:apply-templates>
+      <xsl:for-each select="$head/h:link[@rel eq 'stylesheet']">
+        <xsl:variable name="name" as="xs:string" select="tokenize(@href, '/')[last()]"/>
+        <xsl:variable name="entry" as="element()?" select="$vp:css-catalog//*[@name eq $name]"/>
+        <xsl:choose>
+          <xsl:when test="exists($entry)">
+            <xsl:variable name="source" as="xs:anyURI" select="resolve-uri($entry/@uri, base-uri($vp:css-catalog))" />
+            <xsl:variable name="destination" as="xs:anyURI" select="resolve-uri(@href, fp:mediaobject-basedirectory($current-output-directory))"/>
+            <xsl:sequence select="map:entry($destination, $source)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:message terminate="no" select="'WARNING: No entry in CSS catalog for ' || $name"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:for-each>
     </xsl:variable>
     <xsl:sequence select="map:merge($instructions)"/>
   </xsl:function>
@@ -274,53 +295,5 @@
       select="'Warning: mediaobject copyinstruction not yet implemented for ' || local-name() || '.'"
     />
   </xsl:template>
-
-  <!-- mp:stylesheet-copy-instruction ==========================================================================
-  |
-  |========================================================================================================= -->
-  
-  <!-- Known ressources within xslTNG -->
-  <xsl:template
-    match="h:link[@href = ('./css/docbook.css', './css/docbook-paged.css', './css/vendor-weasyprint.css')]"
-    mode="mp:stylesheet-copy-instruction">
-    <xsl:param name="current-output-directory" as="xs:string"/>
-    <xsl:param name="static-base-uri" as="xs:anyURI"/>
-    <xsl:variable name="resources" as="xs:anyURI"
-      select="resolve-uri('../resources/', $static-base-uri)"/>
-    <xsl:variable name="source" as="xs:anyURI" select="resolve-uri(@href, $resources)"/>
-    <xsl:variable name="destination" as="xs:anyURI"
-      select="resolve-uri(@href, $current-output-directory)"/>
-    <xsl:sequence select="map:entry($destination, $source)"/>
-  </xsl:template>
-  
-  <!-- Known local resources -->
-  <xsl:template
-    match="h:link[@href = ('./css/kosit-print.css')]"
-    mode="mp:stylesheet-copy-instruction">
-    <xsl:param name="current-output-directory" as="xs:string"/>
-    <xsl:param name="static-base-uri" as="xs:anyURI"/>
-    <xsl:variable name="resources" as="xs:anyURI"
-      select="resolve-uri('../../resources/print/', $static-base-uri)"/>
-    <xsl:variable name="source" as="xs:anyURI" select="resolve-uri(tokenize(@href,'/')[last()], $resources)"/>
-    <xsl:variable name="destination" as="xs:anyURI"
-      select="resolve-uri(@href, $current-output-directory)"/>
-    <xsl:sequence select="map:entry($destination, $source)"/>
-  </xsl:template>
-
-  <!-- Fallback -->
-  <xsl:template match="*" mode="mp:stylesheet-copy-instruction" priority="-10">
-    <xsl:choose>
-      <xsl:when test="self::h:link">
-        <xsl:message terminate="no" select="'No copy instruction for stylesheet ' || @href"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:message terminate="yes"
-          select="'Template mode mp:stylesheet-copy-instruction must not be called for element ' || name()"
-        />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  
 
 </xsl:stylesheet>
