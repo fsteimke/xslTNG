@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="https://www.xoev.de/docbook-tng/css">
+    <!-- Ein CSS Katalog nach der Idee eines XML Catalog =======================================
+     |   Dies ist lediglich eine Idee von mir und nirgends standardisiert. 
+     |   Der Katalog soll in dem DocBook tng Framework der KoSIT genutzt werden,
+     |   um CSS Ressourcen an die Stelle zu kopieren, an denen das generierte HTML sie benötigt.
+     |
+     |   In dem Falls soll diese Katalogdatei helfen, 
+     |   die Quelle für die Kopieroperation zu ermitteln. 
+     |   Frank Steimke November 2024 
+     |====================================================================================== -->
+
+    <!-- DocBook xslTNG Standard =========================================================== -->
+
+    <uri name="docbook-epub.css" uri="docbook-xslTNG-nosaxon/resources/css/docbook-epub.css"/>
+
+    <uri name="docbook.css" uri="docbook-xslTNG-nosaxon/resources/css/docbook.css"/>
+
+    <uri name="docbook-paged.css" uri="docbook-xslTNG-nosaxon/resources/css/docbook-paged.css"/>
+
+    <uri name="docbook-toc.css" uri="docbook-xslTNG-nosaxon/resources/css/docbook-toc.css"/>
+
+    <uri name="vendor-ahf-portrait.css"
+        uri="docbook-xslTNG-nosaxon/resources/css/vendor-ahf-portrait.css"/>
+
+    <uri name="vendor-ahf-landscape.css"
+        uri="docbook-xslTNG-nosaxon/resources/css/vendor-ahf-landscape.css"/>
+
+    <uri name="vendor-weasyprint.css"
+        uri="docbook-xslTNG-nosaxon/resources/css/vendor-weasyprint.css"/>
+
+    <!-- Erweiterung KoSIT ================================================================ -->
+    <uri name="kosit-print.css" uri="resources/print/kosit-print.css"/>
+
+    <uri name="office.css" uri="resources/print/office.css"/>
+
+</catalog>
