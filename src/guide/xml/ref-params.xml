@@ -1014,6 +1014,22 @@ and <varname>copyright-collapse-years</varname>.</para>
 
 <refentry>
   <refmeta>
+    <fieldsynopsis>
+      <varname>css-catalogfile</varname>
+      <initializer>'../../css-catalog.xml'</initializer>
+    </fieldsynopsis>
+  </refmeta>
+  <refnamediv>
+    <refpurpose>Path to CSS catalog file</refpurpose>
+  </refnamediv>
+  <refsection>
+    <title>Description</title>
+    <para>Path to <emphasis>CSS catalog</emphasis> file, for copy of CSS resources.</para>
+  </refsection>
+</refentry>
+  
+<refentry>
+  <refmeta>
     <refentrytitle>$date-date-format, $date-dateTime-format</refentrytitle>
     <fieldsynopsis>
       <varname>date-date-format</varname>
