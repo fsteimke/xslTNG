@@ -18,14 +18,16 @@
    |======================================================================================================= -->
 
   <xsl:variable name="vp:css-catalog" as="document-node()?">
-    <xsl:try>
-      <xsl:sequence select="doc($css-catalogfile)"/>
-      <xsl:catch>
-        <xsl:message terminate="no"
-          select="'WARNING: Can''t open CSS cataolg file ' || $css-catalogfile || ': ' || $err:description"
-        />
-      </xsl:catch>
-    </xsl:try>
+    <xsl:if test="$css-catalogfile">
+      <xsl:try>
+        <xsl:sequence select="doc($css-catalogfile)"/>
+        <xsl:catch>
+          <xsl:message terminate="no"
+            select="'WARNING: Can''t open CSS cataolg file ' || $css-catalogfile || ': ' || $err:description"
+          />
+        </xsl:catch>
+      </xsl:try>
+    </xsl:if>
   </xsl:variable>
 
 
@@ -102,23 +104,53 @@
     <xsl:param name="static-base-uri" as="xs:anyURI"/>
     <xsl:param name="current-output-directory" as="xs:string?"/>
 
-    <xsl:variable name="instructions" as="map(xs:anyURI, xs:anyURI)*">
-      <xsl:for-each select="$head/h:link[@rel eq 'stylesheet']">
-        <xsl:variable name="name" as="xs:string" select="tokenize(@href, '/')[last()]"/>
+    <xsl:if test="$vp:css-catalog">
+      <xsl:variable name="instructions" as="map(xs:anyURI, xs:anyURI)*">
+        <xsl:for-each select="$head/h:link[@rel eq 'stylesheet']">
+          <xsl:variable name="name" as="xs:string" select="tokenize(@href, '/')[last()]"/>
+          <xsl:variable name="entry" as="element()?" select="$vp:css-catalog//*[@name eq $name]"/>
+          <xsl:choose>
+            <xsl:when test="exists($entry)">
+              <xsl:variable name="source" as="xs:anyURI"
+                select="resolve-uri($entry/@uri, base-uri($vp:css-catalog))"/>
+              <xsl:variable name="destination" as="xs:anyURI"
+                select="resolve-uri(@href, fp:mediaobject-basedirectory($current-output-directory))"/>
+              <xsl:sequence select="map:entry($destination, $source)"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:message terminate="no" select="'WARNING: No entry in CSS catalog for ' || $name"
+              />
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:for-each>
+      </xsl:variable>
+      <xsl:sequence select="map:merge($instructions)"/>
+    </xsl:if>
+  </xsl:function>
+  
+  <xsl:function name="fp:logo-instructions" as="map(xs:anyURI, xs:anyURI)*">
+    <xsl:param name="logo" as="element(h:img)*"/>
+    <xsl:param name="current-output-directory" as="xs:string?"/>
+    <xsl:if test="$vp:css-catalog">
+      <xsl:for-each select="$logo">
+        <xsl:variable name="name" as="xs:string" select="@src"/>
         <xsl:variable name="entry" as="element()?" select="$vp:css-catalog//*[@name eq $name]"/>
         <xsl:choose>
           <xsl:when test="exists($entry)">
-            <xsl:variable name="source" as="xs:anyURI" select="resolve-uri($entry/@uri, base-uri($vp:css-catalog))" />
-            <xsl:variable name="destination" as="xs:anyURI" select="resolve-uri(@href, fp:mediaobject-basedirectory($current-output-directory))"/>
+            <xsl:variable name="source" as="xs:anyURI"
+              select="resolve-uri($entry/@uri, base-uri($vp:css-catalog))"/>
+            <xsl:variable name="filename" as="xs:string" select="tokenize($entry/@uri, '/')[last()]"/>
+            <xsl:variable name="destination" as="xs:anyURI"
+              select="resolve-uri($filename, fp:mediaobject-basedirectory($current-output-directory))"/>
             <xsl:sequence select="map:entry($destination, $source)"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:message terminate="no" select="'WARNING: No entry in CSS catalog for ' || $name"/>
+            <xsl:message terminate="no"
+              select="'WARNING: No entry in CSS catalog for Logo ' || $name"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:for-each>
-    </xsl:variable>
-    <xsl:sequence select="map:merge($instructions)"/>
+    </xsl:if>
   </xsl:function>
 
   <!-- Calculates the URI where copyinstructions will be written 
@@ -139,15 +171,17 @@
   <xsl:template name="tp:copyinstructions">
     <xsl:param name="head" as="element(h:head)?"/>
     <xsl:param name="mediaobjects" as="element()*"/>
+    <xsl:param name="logo" as="element(h:img)*"/>
     <xsl:param name="current-output-directory" as="xs:string?"/>
     <xsl:param name="static-base-uri" as="xs:anyURI"/>
     <xsl:variable name="mediaobject-basedirectory" as="xs:anyURI?"
       select="fp:mediaobject-basedirectory($current-output-directory)"/>
     <xsl:variable name="instructions" as="map(*)" select="
         let $m := fp:mediaobjects-instructions($mediaobjects, $mediaobject-basedirectory),
+          $l := fp:logo-instructions($logo, $current-output-directory),
           $s := fp:stylesheet-instructions($head, $static-base-uri, $current-output-directory)
         return
-          map:merge(($m, $s))"/>
+          map:merge(($m, $l, $s))"/>
     <xsl:if test="exists(map:keys($instructions))">
       <!-- now we can be sure that $mediaobject-basedirectory exists
        |   because it's a prerequisite for $instructions  -->

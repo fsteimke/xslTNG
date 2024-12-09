@@ -45,6 +45,18 @@ contained herein.</para>
 <year>2024</year>
 <holder>Norman Walsh</holder>
 </copyright>
+<abstract xml:lang="de">
+  <para>Dies ist die Referenz für die xslTNG Stylesheets von
+        <personname><firstname>Norman</firstname><surname>Walsh</surname></personname>. Es
+    entspricht weitestgehend dem von ihm veröffentlichten <link
+      xlink:href="https://xsltng.docbook.org/guide/index.html" xml:lang="en">Reference
+      Guide</link>, enthält aber auch Hinweise auf proprietäre Erweiterungen in <link
+      xlink:href="https://github.com/fsteimke/xslTNG">meinem Fork</link>.</para>
+  <para>Im Wesentlichen dient dieses Dokument dem Test des <link
+      xlink:href="https://projekte.kosit.org/steimke/xsltng-kosit">Oxygen Framework
+        <quote>DocBook tng</quote> für die Verwendung der xslTNG Stylesheets</link> in der
+    KoSIT</para>
+</abstract>
 </info>
 <part>
 <title>Introduction</title>
