@@ -288,6 +288,7 @@
     <xsl:call-template name="tp:copyinstructions">
       <xsl:with-param name="head" select="($result//h:head)[1]"/>
       <xsl:with-param name="mediaobjects" select="$result//*[@ghost:sourcefile]"/>
+      <xsl:with-param name="logo" as="element(h:img)*" select="$result//h:img[contains(@class, 'logo')]"/>
       <xsl:with-param name="current-output-directory" as="xs:string?" select="$current-output-directory"/>
       <xsl:with-param name="static-base-uri" select="static-base-uri()"/>
     </xsl:call-template>

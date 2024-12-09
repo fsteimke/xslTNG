@@ -1012,19 +1012,24 @@ and <varname>copyright-collapse-years</varname>.</para>
 </refsection>
 </refentry>
 
-<refentry>
+<refentry xml:lang="de">
   <refmeta>
     <fieldsynopsis>
       <varname>css-catalogfile</varname>
-      <initializer>'../../css-catalog.xml'</initializer>
+      <initializer>'https://www.xoev.de/docbook-tng/css-catalog.xml'</initializer>
     </fieldsynopsis>
   </refmeta>
   <refnamediv>
-    <refpurpose>Path to CSS catalog file</refpurpose>
+    <refpurpose>Pfad zur CSS Katalog Datei</refpurpose>
   </refnamediv>
   <refsection>
-    <title>Description</title>
-    <para>Path to <emphasis>CSS catalog</emphasis> file, for copy of CSS resources.</para>
+    <title>Beschreibung</title>
+    <para>Dies ist eine proprietäre Erweiterung. Die CSS Katalogdatei dient dem Ziel, dass nicht nur
+        Bilder, sondern auch CSS Dateien an den Ort kopiert werden können, an dem das generierte
+        HTML sie erwartet.</para>
+      <para>Ähnlich einer XML Katalogdatei bildet die CSS Katalogdatei fiktive Pfade auf reale
+        Dateipfade ab.</para>
+      <para> </para>
   </refsection>
 </refentry>
   
