@@ -128,6 +128,11 @@
     </xsl:if>
   </xsl:function>
   
+  <!-- Copy-instructions for img elements which contain 'logo' in their @class
+       |  Has to be aligned with handling of these elements in mode m:mediaobject-output-adjust
+       |  Every logo image file has to be either in CSS Catalog file or
+       |  in path <sourcepath>/logo/<image> and will be copied to <output>/logo/<image>
+       |  See resources/xsl/common.xsl in Framework DocBook tng -->
   <xsl:function name="fp:logo-instructions" as="map(xs:anyURI, xs:anyURI)*">
     <xsl:param name="logo" as="element(h:img)*"/>
     <xsl:param name="current-output-directory" as="xs:string?"/>
@@ -139,14 +144,21 @@
           <xsl:when test="exists($entry)">
             <xsl:variable name="source" as="xs:anyURI"
               select="resolve-uri($entry/@uri, base-uri($vp:css-catalog))"/>
-            <xsl:variable name="filename" as="xs:string" select="tokenize($entry/@uri, '/')[last()]"/>
+            <xsl:variable name="filename" as="xs:string" select="
+                let $fn := tokenize($entry/@uri, '/')[last()]
+                return
+                  string-join(('logo', $fn), '/')"/>
             <xsl:variable name="destination" as="xs:anyURI"
               select="resolve-uri($filename, fp:mediaobject-basedirectory($current-output-directory))"/>
             <xsl:sequence select="map:entry($destination, $source)"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:message terminate="no"
-              select="'WARNING: No entry in CSS catalog for Logo ' || $name"/>
+            <xsl:variable name="source" as="xs:anyURI" select="resolve-uri(@src, base-uri())"/>
+            <xsl:variable name="destination" as="xs:anyURI" select="
+                let $fn := tokenize(@src, '/')[last()]
+                return
+                  string-join(('logo', $fn), '/') => xs:anyURI()"/>
+            <xsl:sequence select="map:entry($destination, $source)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:for-each>
