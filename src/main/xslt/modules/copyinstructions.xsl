@@ -155,9 +155,11 @@
           <xsl:otherwise>
             <xsl:variable name="source" as="xs:anyURI" select="resolve-uri(@src, base-uri())"/>
             <xsl:variable name="destination" as="xs:anyURI" select="
-                let $fn := tokenize(@src, '/')[last()]
+                let $fn := tokenize(@src, '/')[last()],
+                  $fragment := string-join(('logo', $fn), '/')
                 return
-                  string-join(('logo', $fn), '/') => xs:anyURI()"/>
+                  resolve-uri($fragment, fp:mediaobject-basedirectory($current-output-directory))"
+            />
             <xsl:sequence select="map:entry($destination, $source)"/>
           </xsl:otherwise>
         </xsl:choose>
