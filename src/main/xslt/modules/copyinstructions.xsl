@@ -3,6 +3,7 @@
   xmlns:ext="http://docbook.org/extensions/xslt"
   xmlns:ghost="http://docbook.org/ns/docbook/ephemeral" xmlns:h="http://www.w3.org/1999/xhtml"
   xmlns:mp="http://docbook.org/ns/docbook/modes/private"
+  xmlns:resource="https://www.xoev.de/docbook-tng/resource"
   xmlns:t="http://docbook.org/ns/docbook/templates"
   xmlns:tp="http://docbook.org/ns/docbook/templates/private"
   xmlns:fp="http://docbook.org/ns/docbook/functions/private"
@@ -16,18 +17,37 @@
    |   Copy instructions are either written to a file or performed if expath file module is availabe.
    |   Frank Steimke fsteimke.hb (at) gmail.com November 2024
    |======================================================================================================= -->
-
-  <xsl:variable name="vp:css-catalog" as="document-node()?">
-    <xsl:if test="$css-catalogfile">
+  <!-- Überführt den Inhalt der durch $catalogfile bezeichneten Resourcen-Katalogdatei 
+       in eine Sequenz von map(*) -->
+  <xsl:function name="fp:resource-catalog-entries" as="map(xs:string, xs:anyURI)*">
+    <xsl:param name="catalogfile" as="xs:string?"/>
+    <xsl:if test="$catalogfile">
       <xsl:try>
-        <xsl:sequence select="doc($css-catalogfile)"/>
+        <xsl:sequence select="doc($catalogfile)/*/* ! fp:resource-catalog-entry(.)"/>
         <xsl:catch>
-          <xsl:message terminate="no"
-            select="'WARNING: Can''t open CSS cataolg file ' || $css-catalogfile || ': ' || $err:description"
-          />
+          <xsl:message select="'Error: can''t process Resource Catalog File ' || $catalogfile || ': ' || $err:description"/>
         </xsl:catch>
       </xsl:try>
     </xsl:if>
+  </xsl:function>
+  
+  <!-- Erstellt eine Map für einen Eintrag in einer Resource Katalogdatei. Die angegebene URI wird in eine absolute URI überführt -->
+  <xsl:function name="fp:resource-catalog-entry" as="map(xs:string, xs:anyURI)?">
+    <xsl:param name="catalogentry" as="element(resource:uri)"/>
+    <xsl:try>
+      <xsl:sequence select="map:entry(xs:string($catalogentry/@name), resolve-uri($catalogentry/@uri, base-uri($catalogentry)))"/>
+      <xsl:catch>
+        <xsl:message select="'Error: can''t process Resource Catalog Entry' || $catalogentry/@name || ': ' || $err:description"/>
+      </xsl:catch>
+    </xsl:try>
+  </xsl:function>
+
+  <xsl:variable name="vp:resource-catalog" as="map(*)">
+    <xsl:sequence select="
+        map:merge((
+          fp:resource-catalog-entries($resource-catalog),
+          fp:resource-catalog-entries($user-resource-catalog)
+        ))"/>
   </xsl:variable>
 
 
@@ -101,70 +121,42 @@
 
   <xsl:function name="fp:stylesheet-instructions" as="map(xs:anyURI, xs:anyURI)?">
     <xsl:param name="head" as="element(h:head)?"/>
-    <xsl:param name="static-base-uri" as="xs:anyURI"/>
     <xsl:param name="current-output-directory" as="xs:string?"/>
-
-    <xsl:if test="$vp:css-catalog">
-      <xsl:variable name="instructions" as="map(xs:anyURI, xs:anyURI)*">
-        <xsl:for-each select="$head/h:link[@rel eq 'stylesheet']">
-          <xsl:variable name="name" as="xs:string" select="tokenize(@href, '/')[last()]"/>
-          <xsl:variable name="entry" as="element()?" select="$vp:css-catalog//*[@name eq $name]"/>
-          <xsl:choose>
-            <xsl:when test="exists($entry)">
-              <xsl:variable name="source" as="xs:anyURI"
-                select="resolve-uri($entry/@uri, base-uri($vp:css-catalog))"/>
-              <xsl:variable name="destination" as="xs:anyURI"
-                select="resolve-uri(@href, fp:mediaobject-basedirectory($current-output-directory))"/>
-              <xsl:sequence select="map:entry($destination, $source)"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:message terminate="no" select="'WARNING: No entry in CSS catalog for ' || $name"
-              />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:for-each>
-      </xsl:variable>
-      <xsl:sequence select="map:merge($instructions)"/>
-    </xsl:if>
-  </xsl:function>
-  
-  <!-- Copy-instructions for img elements which contain 'logo' in their @class
-       |  Has to be aligned with handling of these elements in mode m:mediaobject-output-adjust
-       |  Every logo image file has to be either in CSS Catalog file or
-       |  in path <sourcepath>/logo/<image> and will be copied to <output>/logo/<image>
-       |  See resources/xsl/common.xsl in Framework DocBook tng -->
-  <xsl:function name="fp:logo-instructions" as="map(xs:anyURI, xs:anyURI)*">
-    <xsl:param name="logo" as="element(h:img)*"/>
-    <xsl:param name="current-output-directory" as="xs:string?"/>
-    <xsl:if test="$vp:css-catalog">
-      <xsl:for-each select="$logo">
-        <xsl:variable name="name" as="xs:string" select="@src"/>
-        <xsl:variable name="entry" as="element()?" select="$vp:css-catalog//*[@name eq $name]"/>
+    <xsl:variable name="instructions" as="map(*)*">
+      <xsl:for-each select="$head/h:link[@rel eq 'stylesheet']/@href">
+        <xsl:variable name="name" as="xs:string" select="tokenize(.,'/')[last()]"/>
+        <xsl:variable name="destination" as="xs:anyURI" select="resolve-uri(.,fp:mediaobject-basedirectory($current-output-directory))"/>
         <xsl:choose>
-          <xsl:when test="exists($entry)">
-            <xsl:variable name="source" as="xs:anyURI"
-              select="resolve-uri($entry/@uri, base-uri($vp:css-catalog))"/>
-            <xsl:variable name="filename" as="xs:string" select="
-                let $fn := tokenize($entry/@uri, '/')[last()]
-                return
-                  string-join(('logo', $fn), '/')"/>
-            <xsl:variable name="destination" as="xs:anyURI"
-              select="resolve-uri($filename, fp:mediaobject-basedirectory($current-output-directory))"/>
-            <xsl:sequence select="map:entry($destination, $source)"/>
+          <xsl:when test="map:contains($vp:resource-catalog, $name)">
+            <xsl:sequence select="map:entry($destination, $vp:resource-catalog($name))"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:variable name="source" as="xs:anyURI" select="resolve-uri(@src, base-uri())"/>
-            <xsl:variable name="destination" as="xs:anyURI" select="
-                let $fn := tokenize(@src, '/')[last()],
-                  $fragment := string-join(('logo', $fn), '/')
-                return
-                  resolve-uri($fragment, fp:mediaobject-basedirectory($current-output-directory))"
-            />
-            <xsl:sequence select="map:entry($destination, $source)"/>
+            <xsl:message select="'Warning: no entry in Resource Catalogs for CSS ' || ."/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:for-each>
-    </xsl:if>
+    </xsl:variable>
+    <xsl:sequence select="map:merge($instructions)"/>
+  </xsl:function>
+  
+  <xsl:function name="fp:logo-instructions" as="map(xs:anyURI, xs:anyURI)*">
+    <xsl:param name="logo" as="element(h:img)*"/>
+    <xsl:param name="current-output-directory" as="xs:string?"/>
+    <xsl:variable name="instructions" as="map(*)*">
+      <xsl:for-each select="$logo">
+        <xsl:variable name="name" as="xs:string" select="tokenize(@src,'/')[last()]"/>
+        <xsl:variable name="destination" as="xs:anyURI" select="resolve-uri(@src,fp:mediaobject-basedirectory($current-output-directory))"/>
+        <xsl:choose>
+          <xsl:when test="map:contains($vp:resource-catalog, $name)">
+            <xsl:sequence select="map:entry($destination, $vp:resource-catalog($name))"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:message select="'Warning: no entry in Resource Catalogs for Logo ' || @src "/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:for-each>
+    </xsl:variable>
+    <xsl:sequence select="map:merge($instructions)"/>
   </xsl:function>
 
   <!-- Calculates the URI where copyinstructions will be written 
@@ -193,7 +185,7 @@
     <xsl:variable name="instructions" as="map(*)" select="
         let $m := fp:mediaobjects-instructions($mediaobjects, $mediaobject-basedirectory),
           $l := fp:logo-instructions($logo, $current-output-directory),
-          $s := fp:stylesheet-instructions($head, $static-base-uri, $current-output-directory)
+          $s := fp:stylesheet-instructions($head, $current-output-directory)
         return
           map:merge(($m, $l, $s))"/>
     <xsl:if test="exists(map:keys($instructions))">
