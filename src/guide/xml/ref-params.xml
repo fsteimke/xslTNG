@@ -1015,21 +1015,22 @@ and <varname>copyright-collapse-years</varname>.</para>
 <refentry xml:lang="de">
   <refmeta>
     <fieldsynopsis>
-      <varname>css-catalogfile</varname>
-      <initializer>'https://www.xoev.de/docbook-tng/css-catalog.xml'</initializer>
+      <varname>resource-catalog</varname>
+      <initializer>'https://www.xoev.de/docbook-tng/resource-catalog.xml'</initializer>
     </fieldsynopsis>
   </refmeta>
   <refnamediv>
-    <refpurpose>Pfad zur CSS Katalog Datei</refpurpose>
+    <refpurpose>Pfad zur Katalogdatei für Ressourcen des Framework</refpurpose>
   </refnamediv>
   <refsection>
     <title>Beschreibung</title>
-    <para>Dies ist eine proprietäre Erweiterung. Die CSS Katalogdatei dient dem Ziel, dass nicht nur
-        Bilder, sondern auch CSS Dateien an den Ort kopiert werden können, an dem das generierte
-        HTML sie erwartet.</para>
-      <para>Ähnlich einer XML Katalogdatei bildet die CSS Katalogdatei fiktive Pfade auf reale
-        Dateipfade ab.</para>
-      <para> </para>
+    <para>Dies ist eine proprietäre Erweiterung. Die Katalogdatei für Ressourcen dient dem Ziel,
+      dass nicht nur Bilder, sondern auch CSS Dateien und Bilddateien für Logos an den Ort kopiert
+      werden können, an dem das generierte HTML sie erwartet. Diese Katalogdatei umfasst zentrale
+      Ressourcen des Framework. Für projektspezifische Ressourcen kann ein weiterer Katalog mittels
+        <parameter>user-resource-catalog</parameter> angegeben werden.</para>
+    <para>Ähnlich einer XML Katalogdatei bildet die CSS Katalogdatei fiktive Pfade auf reale
+      Dateipfade ab, die relativ zur Katalodatei interpretiert werden.</para>
   </refsection>
 </refentry>
   
@@ -4158,6 +4159,28 @@ instead of the “ordinary” versions. This does not effect links in
 Each will be added to the output after the standard stylesheets.</para>
 </refsection>
 </refentry>
+  
+<refentry xml:lang="de">
+  <refmeta>
+    <fieldsynopsis>
+      <varname>user-resource-catalog</varname>
+      <initializer>()</initializer>
+    </fieldsynopsis>
+  </refmeta>
+  <refnamediv>
+    <refpurpose>Pfad zur optionalen Katalogdatei für Ressourcen des Nutzers</refpurpose>
+  </refnamediv>
+  <refsection>
+    <title>Beschreibung</title>
+    <para>Dies ist eine proprietäre Erweiterung. Die Katalogdatei für Ressourcen dient dem Ziel,
+      dass nicht nur Bilder, sondern auch CSS Dateien und Bilddateien für Logos an den Ort kopiert
+      werden können, an dem das generierte HTML sie erwartet. Diese optionale Katalogdatei umfasst
+      projektspezifische Ressourcen des Nutzers, und ergänzt den <parameter>resource-catalog</parameter>
+      des Framework.</para>
+    <para>Ähnlich einer XML Katalogdatei bildet die CSS Katalogdatei fiktive Pfade auf reale
+      Dateipfade ab, die relativ zur Katalodatei interpretiert werden.</para>
+  </refsection>
+</refentry>  
 
 <refentry>
   <refmeta>
