@@ -42,13 +42,14 @@
     </xsl:try>
   </xsl:function>
 
-  <xsl:variable name="vp:resource-catalog" as="map(*)">
+  <xsl:function name="fp:resource-catalog" as="map(*)">
+    <xsl:param name="base-uri" as="xs:anyURI"/>
     <xsl:sequence select="
         map:merge((
           fp:resource-catalog-entries($resource-catalog),
-          fp:resource-catalog-entries($user-resource-catalog)
+          fp:resource-catalog-entries(resolve-uri($user-resource-catalog, $base-uri))
         ))"/>
-  </xsl:variable>
+  </xsl:function>
 
 
   <!-- Tries to find the absolute URI for the mediaobjects base directory, that is, the URI
@@ -122,13 +123,14 @@
   <xsl:function name="fp:stylesheet-instructions" as="map(xs:anyURI, xs:anyURI)?">
     <xsl:param name="head" as="element(h:head)?"/>
     <xsl:param name="current-output-directory" as="xs:string?"/>
+    <xsl:param name="resource-catalog" as="map(*)"/>
     <xsl:variable name="instructions" as="map(*)*">
       <xsl:for-each select="$head/h:link[@rel eq 'stylesheet']/@href">
         <xsl:variable name="name" as="xs:string" select="tokenize(.,'/')[last()]"/>
         <xsl:variable name="destination" as="xs:anyURI" select="resolve-uri(.,fp:mediaobject-basedirectory($current-output-directory))"/>
         <xsl:choose>
-          <xsl:when test="map:contains($vp:resource-catalog, $name)">
-            <xsl:sequence select="map:entry($destination, $vp:resource-catalog($name))"/>
+          <xsl:when test="map:contains($resource-catalog, $name)">
+            <xsl:sequence select="map:entry($destination, $resource-catalog($name))"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:message select="'Warning: no entry in Resource Catalogs for CSS ' || ."/>
@@ -142,13 +144,14 @@
   <xsl:function name="fp:logo-instructions" as="map(xs:anyURI, xs:anyURI)*">
     <xsl:param name="logo" as="element(h:img)*"/>
     <xsl:param name="current-output-directory" as="xs:string?"/>
+    <xsl:param name="resource-catalog" as="map(*)"/>
     <xsl:variable name="instructions" as="map(*)*">
       <xsl:for-each select="$logo">
         <xsl:variable name="name" as="xs:string" select="tokenize(@src,'/')[last()]"/>
         <xsl:variable name="destination" as="xs:anyURI" select="resolve-uri(@src,fp:mediaobject-basedirectory($current-output-directory))"/>
         <xsl:choose>
-          <xsl:when test="map:contains($vp:resource-catalog, $name)">
-            <xsl:sequence select="map:entry($destination, $vp:resource-catalog($name))"/>
+          <xsl:when test="map:contains($resource-catalog, $name)">
+            <xsl:sequence select="map:entry($destination, $resource-catalog($name))"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:message select="'Warning: no entry in Resource Catalogs for Logo ' || @src "/>
@@ -180,12 +183,14 @@
     <xsl:param name="logo" as="element(h:img)*"/>
     <xsl:param name="current-output-directory" as="xs:string?"/>
     <xsl:param name="static-base-uri" as="xs:anyURI"/>
+    <xsl:param name="base-uri" as="xs:anyURI"/>
     <xsl:variable name="mediaobject-basedirectory" as="xs:anyURI?"
       select="fp:mediaobject-basedirectory($current-output-directory)"/>
+    <xsl:variable name="resource-catalog" as="map(*)" select="fp:resource-catalog($base-uri)"/>
     <xsl:variable name="instructions" as="map(*)" select="
         let $m := fp:mediaobjects-instructions($mediaobjects, $mediaobject-basedirectory),
-          $l := fp:logo-instructions($logo, $current-output-directory),
-          $s := fp:stylesheet-instructions($head, $current-output-directory)
+          $l := fp:logo-instructions($logo, $current-output-directory, $resource-catalog),
+          $s := fp:stylesheet-instructions($head, $current-output-directory, $resource-catalog)
         return
           map:merge(($m, $l, $s))"/>
     <xsl:if test="exists(map:keys($instructions))">
