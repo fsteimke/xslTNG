@@ -291,6 +291,7 @@
       <xsl:with-param name="logo" as="element(h:img)*" select="$result//h:img[contains(@class, 'logo')]"/>
       <xsl:with-param name="current-output-directory" as="xs:string?" select="$current-output-directory"/>
       <xsl:with-param name="static-base-uri" select="static-base-uri()"/>
+      <xsl:with-param name="base-uri" select="base-uri(/*)"/>
     </xsl:call-template>
   </xsl:if>
   
