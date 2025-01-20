@@ -120,12 +120,13 @@
     </xsl:if>
   </xsl:function>
 
+  <!-- Returns a map to copy CSS and Javascript Resources -->
   <xsl:function name="fp:stylesheet-instructions" as="map(xs:anyURI, xs:anyURI)?">
     <xsl:param name="head" as="element(h:head)?"/>
     <xsl:param name="current-output-directory" as="xs:string?"/>
     <xsl:param name="resource-catalog" as="map(*)"/>
     <xsl:variable name="instructions" as="map(*)*">
-      <xsl:for-each select="$head/h:link[@rel eq 'stylesheet']/@href">
+      <xsl:for-each select="$head/h:link[@rel eq 'stylesheet']/@href union $head/h:script/@src">
         <xsl:variable name="name" as="xs:string" select="tokenize(.,'/')[last()]"/>
         <xsl:variable name="destination" as="xs:anyURI" select="resolve-uri(.,fp:mediaobject-basedirectory($current-output-directory))"/>
         <xsl:choose>
@@ -133,7 +134,7 @@
             <xsl:sequence select="map:entry($destination, $resource-catalog($name))"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:message select="'Warning: no entry in Resource Catalogs for CSS ' || ."/>
+            <xsl:message select="'Warning: no entry in Resource Catalogs for ' || local-name() || ': ' || ."/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:for-each>
