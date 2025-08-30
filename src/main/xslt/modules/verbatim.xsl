@@ -506,7 +506,7 @@
 
      <xsl:variable name="callouts"
                    select="$line[. instance of element()
-                                 and contains-token(@class, 'callout-bug')]"/>
+                                 and fp:contains-token(@class, 'callout-bug')]"/>
 
      <xsl:variable name="highlight" select="$vconfig?callout"/>
 
@@ -521,12 +521,12 @@
 
      <xsl:variable name="classes" as="xs:string+">
        <xsl:sequence select="'line'"/>
-       <xsl:if test="(('lines' = $highlight) and $callouts[.[contains-token(@class, 'defcol')]])
+       <xsl:if test="(('lines' = $highlight) and $callouts[.[fp:contains-token(@class, 'defcol')]])
                      or
                      (('lineranges' = $highlight
                        or 'lineranges-first' = $highlight
                        or 'lineranges-all' = $highlight)
-                     and $callouts[.[contains-token(@class, 'linerange')]])">
+                     and $callouts[.[fp:contains-token(@class, 'linerange')]])">
          <xsl:sequence select="'highlight'"/>
          <xsl:sequence select="'line'||."/>
        </xsl:if>
@@ -563,25 +563,25 @@
   <xsl:for-each select="$line">
     <xsl:choose>
       <xsl:when test=". instance of element()
-                      and contains-token(@class, 'callout-bug')">
+                      and fp:contains-token(@class, 'callout-bug')">
         <xsl:choose>
           <xsl:when test="'lineranges-first' = $highlight
-                          and .[contains-token(@class, 'linerange')]">
-            <xsl:sequence select="if (.[contains-token(@class, 'firstline')])
+                          and .[fp:contains-token(@class, 'linerange')]">
+            <xsl:sequence select="if (.[fp:contains-token(@class, 'firstline')])
                                   then .
                                   else ()"/>
           </xsl:when>
           <xsl:when test="'lineranges-all' = $highlight
-                          and .[contains-token(@class, 'linerange')]">
+                          and .[fp:contains-token(@class, 'linerange')]">
             <xsl:sequence select="."/>
           </xsl:when>
           <xsl:when test="'lines' = $highlight
-                          and .[contains-token(@class, 'defcol')]">
+                          and .[fp:contains-token(@class, 'defcol')]">
             <xsl:sequence select="."/>
           </xsl:when>
           <xsl:when test="'linecolumn' = $highlight
-                          and .[not(contains-token(@class, 'defcol'))
-                                and not(contains-token(@class, 'linerange'))]">
+                          and .[not(fp:contains-token(@class, 'defcol'))
+                                and not(fp:contains-token(@class, 'linerange'))]">
             <xsl:sequence select="."/>
           </xsl:when>
           <xsl:otherwise>

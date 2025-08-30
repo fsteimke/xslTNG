@@ -345,7 +345,7 @@
   <!-- landscapeFigure is legacy PI from XSLT 1.0 Stylesheets, 
        see http://www.sagehill.net/docbookxsl/LandscapeImage.html -->
   <xsl:variable name="landscape" as="xs:string?">
-    <xsl:if test="contains-token(@role, 'landscape') or processing-instruction('landscapeFigure')">
+    <xsl:if test="fp:contains-token(@role, 'landscape') or processing-instruction('landscapeFigure')">
       <xsl:sequence select="'landscape'"/>
     </xsl:if>
   </xsl:variable>

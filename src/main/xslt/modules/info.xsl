@@ -203,7 +203,7 @@
 
   <xsl:variable name="style" as="xs:string?">
     <xsl:for-each select="$v:personal-name-styles">
-      <xsl:if test="contains-token($node/@role, .)">
+      <xsl:if test="fp:contains-token($node/@role, .)">
         <xsl:sequence select="."/>
       </xsl:if>
     </xsl:for-each>
@@ -217,7 +217,7 @@
                            or parent::db:othercredit)
                       and parent::*/@role">
         <xsl:for-each select="$v:personal-name-styles">
-          <xsl:if test="contains-token($node/parent::*/@role, .)">
+          <xsl:if test="fp:contains-token($node/parent::*/@role, .)">
             <xsl:sequence select="."/>
           </xsl:if>
         </xsl:for-each>

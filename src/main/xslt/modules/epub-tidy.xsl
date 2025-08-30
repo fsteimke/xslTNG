@@ -1,5 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:h="http://www.w3.org/1999/xhtml"
+                xmlns:fp="http://docbook.org/ns/docbook/functions/private"
                 xmlns:m="http://docbook.org/ns/docbook/modes"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns="http://www.w3.org/1999/xhtml"
@@ -20,8 +21,8 @@
 
 <xsl:template match="h:script
                      | h:meta[not(@name)]
-                     | h:nav[contains-token(@class, 'top')
-                             or contains-token(@class, 'bottom')]"/>
+                     | h:nav[fp:contains-token(@class, 'top')
+                             or fp:contains-token(@class, 'bottom')]"/>
 
 <xsl:template match="h:header[ancestor::h:header]">
   <div class="header">

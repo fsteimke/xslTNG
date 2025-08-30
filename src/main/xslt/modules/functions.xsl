@@ -788,8 +788,8 @@
   <xsl:param name="node" as="element()"/>
 
   <xsl:variable name="nearest"
-                select="($node/ancestor-or-self::*[contains-token(@role,'landscape')
-                                                   or contains-token(@role,'portrait')]
+                select="($node/ancestor-or-self::*[fp:contains-token(@role,'landscape')
+                                                   or fp:contains-token(@role,'portrait')]
                          | $node/ancestor-or-self::db:table[@orient]
                          | $node/ancestor-or-self::db:informaltable[@orient])[last()]"/>
 
@@ -801,7 +801,7 @@
     <xsl:when test="$nearest/@orient">
       <xsl:sequence select="'portrait'"/>
     </xsl:when>
-    <xsl:when test="contains-token($nearest/@role, 'landscape')">
+    <xsl:when test="fp:contains-token($nearest/@role, 'landscape')">
       <xsl:sequence select="'landscape'"/>
     </xsl:when>
     <xsl:otherwise>
