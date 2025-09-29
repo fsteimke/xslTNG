@@ -1,7 +1,16 @@
 #!/bin/bash
 set -euo pipefail
 IFS=$'\n\t'
-
+#
+# Oxygen patch
+#
+# replace call to standard function fn:contains-token#2
+# with a call to fp:contains-token#2 in standalone-functions.xsl
+# because the standard function is not available in Oxygen 26.1
+#
+# some files need fp namespace declaration and import of environment.xsl
+# fst 9/2025
+#
 for script in $(find src/main -type f -name '*.xsl' -print); do
     if [[ ! $(basename $script) = 'standalone-functions.xsl' ]]; then
 	sed -i -e 's/contains-token/fp:contains-token/g' $script

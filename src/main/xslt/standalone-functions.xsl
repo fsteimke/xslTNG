@@ -15,6 +15,7 @@
 <!-- ===================================================================================
 |    Functions designed for use independent from the xsTNG Stylesheets 
 |    e. g. in Schematron rules  
+|    incl. fp:contains-token because of Oxygen Issue with fn:contains-token in 26.1 
 |=================================================================================== -->
 
 <xsl:key name="glossary-entry" match="db:glossary//db:glossentry"
@@ -385,6 +386,21 @@
       let $db := 'Q\{http://docbook\.org/ns/docbook\}'
       return
         path($node) ! replace(., $db, '')"/>
+</xsl:function>
+  
+<!-- ===================================================================================
+|    fn:contains-token is not available in Oxygen 26.1
+===================================================================================== -->
+<xsl:function name="fp:contains-token" use-when="function-available('contains-token',2)">
+  <xsl:param name="input" as="xs:string?"/>
+  <xsl:param name="token" as="xs:string"/>
+  <xsl:sequence select="contains-token($input, $token)"/>
+</xsl:function>  
+  
+<xsl:function name="fp:contains-token" use-when="not(function-available('contains-token', 2))">
+  <xsl:param name="input" as="xs:string?"/>
+  <xsl:param name="token" as="xs:string"/>
+  <xsl:sequence select="normalize-space($token) = tokenize($input,'\s+/>"/>
 </xsl:function>
 
 </xsl:stylesheet>

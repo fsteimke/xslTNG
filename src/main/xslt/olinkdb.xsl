@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:fp="http://docbook.org/ns/docbook/functions/private"
                 xmlns:h="http://www.w3.org/1999/xhtml"
                 xmlns:m="http://docbook.org/ns/docbook/modes"
                 xmlns:t="http://docbook.org/ns/docbook/templates"
@@ -11,6 +12,7 @@
                 version="3.0">
 
 <xsl:import href="docbook.xsl"/>
+<xsl:import href="environment.xsl"/>  
 
 <xsl:param name="output-base-uri" select="''"/>
 <xsl:param name="olink-targetdoc" as="xs:string" required="yes"/>

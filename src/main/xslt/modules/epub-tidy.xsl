@@ -1,4 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:fp="http://docbook.org/ns/docbook/functions/private"
                 xmlns:h="http://www.w3.org/1999/xhtml"
                 xmlns:m="http://docbook.org/ns/docbook/modes"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -9,6 +10,8 @@
                 version="3.0">
 
 <xsl:mode name="m:epub-tidy" on-no-match="shallow-copy"/>
+  
+<xsl:import href="../environment.xsl"/>  
 
 <xsl:template match="h:link[@media and @media != 'screen']"/>
 <xsl:template match="h:link[contains(@href, 'css/docbook.css') and @media = 'screen']">
