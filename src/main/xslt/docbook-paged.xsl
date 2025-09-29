@@ -132,7 +132,7 @@
   </html>
 </xsl:template>
 
-<xsl:template match="h:a[contains-token(@class, 'indexref')]"
+<xsl:template match="h:a[fp:contains-token(@class, 'indexref')]"
               mode="m:chunk-cleanup">
   <xsl:copy>
     <xsl:copy-of select="@*"/>
@@ -140,16 +140,16 @@
   </xsl:copy>
 </xsl:template>
 
-<xsl:template match="h:sup[contains-token(@class, 'footnote-number')
-                           and not(contains-token(@class, 'table-footnote'))]"
+<xsl:template match="h:sup[fp:contains-token(@class, 'footnote-number')
+                           and not(fp:contains-token(@class, 'table-footnote'))]"
               mode="m:chunk-cleanup"/>
 
-<xsl:template match="h:div[contains-token(@class, 'footnote-number')
-                           and not(ancestor::h:div[contains-token(@class, 'table-footnotes')])]"
+<xsl:template match="h:div[fp:contains-token(@class, 'footnote-number')
+                           and not(ancestor::h:div[fp:contains-token(@class, 'table-footnotes')])]"
               mode="m:chunk-cleanup"/>
 
-<xsl:template match="h:div[contains-token(@class, 'footnote-number')
-                           and ancestor::h:div[contains-token(@class, 'table-footnotes')]]"
+<xsl:template match="h:div[fp:contains-token(@class, 'footnote-number')
+                           and ancestor::h:div[fp:contains-token(@class, 'table-footnotes')]]"
               mode="m:chunk-cleanup">
   <span>
     <xsl:apply-templates mode="m:chunk-cleanup"/>
@@ -157,7 +157,7 @@
   </span>
 </xsl:template>
 
-<xsl:template match="h:div[contains-token(@class, 'footnote-body')]"
+<xsl:template match="h:div[fp:contains-token(@class, 'footnote-body')]"
               mode="m:chunk-cleanup">
   <!-- If the footnote consists of a single para, throw away the block
        wrappers. This is a very common case and avoids an issue where
@@ -188,7 +188,7 @@
   <xsl:variable name="target" select="key('hid', @target)"/>
   <span class="footnote">
     <xsl:apply-templates
-        select="$target//h:div[contains-token(@class, 'annotation-content')]/*"
+        select="$target//h:div[fp:contains-token(@class, 'annotation-content')]/*"
         mode="m:chunk-cleanup"/>
   </span>
 </xsl:template>

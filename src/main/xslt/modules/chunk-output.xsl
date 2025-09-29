@@ -116,11 +116,11 @@
   <xsl:variable name="toc"
                 select="fp:resolve-persistent-toc(/*/*[@db-persistent-toc])"/>
 
-  <xsl:sequence select="$toc/h:div/h:div[contains-token(@class, 'toc')]/h:ul"/>
-  <xsl:for-each select="$toc/h:div/h:div[not(contains-token(@class, 'toc'))]">
+  <xsl:sequence select="$toc/h:div/h:div[fp:contains-token(@class, 'toc')]/h:ul"/>
+  <xsl:for-each select="$toc/h:div/h:div[not(fp:contains-token(@class, 'toc'))]">
     <ul class="nav-title">
       <li class="nav-title">
-        <xsl:sequence select="h:div[contains-token(@class, 'title')]/node()"/>
+        <xsl:sequence select="h:div[fp:contains-token(@class, 'title')]/node()"/>
       </li>
       <xsl:sequence select="h:ul/h:li"/>
     </ul>
@@ -153,7 +153,7 @@
                         else ()"/>
 </xsl:function>
 
-<xsl:template match="h:nav[contains-token(@class, 'bottom')]">
+<xsl:template match="h:nav[fp:contains-token(@class, 'bottom')]">
   <xsl:copy>
     <xsl:apply-templates select="@*,node()"/>
 

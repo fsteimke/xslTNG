@@ -52,12 +52,12 @@
         <nav xmlns:epub="http://www.idpf.org/2007/ops" epub:type="toc" id="toc">
           <xsl:variable
               name="lot"
-              select="($toc//h:div[contains-token(@class, 'list-of-titles')])[1]"/>
+              select="($toc//h:div[fp:contains-token(@class, 'list-of-titles')])[1]"/>
           <h1>
             <xsl:sequence
-                select="($lot/h:div/h:div[contains-token(@class, 'title')])[1]/node()"/>
+                select="($lot/h:div/h:div[fp:contains-token(@class, 'title')])[1]/node()"/>
           </h1>
-          <xsl:sequence select="($lot//h:ol[contains-token(@class, 'toc')])[1]"/>
+          <xsl:sequence select="($lot//h:ol[fp:contains-token(@class, 'toc')])[1]"/>
         </nav>
       </body>
     </xsl:copy>
@@ -68,7 +68,7 @@
 
 <xsl:mode name="m:epub-titlepage" on-no-match="shallow-copy"/>
 <xsl:template match="h:html" mode="m:epub-titlepage"/>
-<xsl:template match="h:div[contains-token(@class, 'list-of-titles')]"
+<xsl:template match="h:div[fp:contains-token(@class, 'list-of-titles')]"
               mode="m:epub-titlepage"/>
 
 <xsl:mode name="m:epub-toc" on-no-match="shallow-copy"/>

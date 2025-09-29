@@ -309,7 +309,7 @@
         <xsl:variable name="poster" as="map(*)?">
           <xsl:apply-templates
               select="(../db:imageobject/db:imagedata
-                         [@fileref and contains-token(@role, 'poster')])[1]"
+                         [@fileref and fp:contains-token(@role, 'poster')])[1]"
               mode="m:mediaobject-uris"/>
         </xsl:variable>
         <xsl:if test="exists($poster)">

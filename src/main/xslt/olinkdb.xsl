@@ -39,12 +39,12 @@
 
 <!-- ============================================================ -->
 
-<xsl:template match="h:div[contains-token(@class, 'annotations')]"
+<xsl:template match="h:div[fp:contains-token(@class, 'annotations')]"
               priority="100">
   <!-- there's no practical way to point to an annotation -->
 </xsl:template>
 
-<xsl:template match="h:span[contains-token(@class, 'indexterm')]"
+<xsl:template match="h:span[fp:contains-token(@class, 'indexterm')]"
               priority="100">
   <!-- there's no practical way to point to index terms -->
 </xsl:template>
@@ -103,7 +103,7 @@
 
 <xsl:template match="h:header" mode="parts">
   <xsl:variable name="title"
-                select="h:h1|h:h2|h:h3|h:h4|h:h5|h:div[contains-token(@class,'title')]"/>
+                select="h:h1|h:h2|h:h3|h:h4|h:h5|h:div[fp:contains-token(@class,'title')]"/>
   <xsl:apply-templates select="$title[1]" mode="part-label"/>
   <xsl:apply-templates select="$title[1]" mode="part-number"/>
   <xsl:apply-templates select="$title[1]" mode="part-title"/>
@@ -114,7 +114,7 @@
                 select="h:span[@class='label']/node()"/>
   <xsl:variable name="last" select="$part[last()]"/>
   <xsl:variable name="part"
-                select="if ($last/self::h:span and contains-token($last/@class, 'sep'))
+                select="if ($last/self::h:span and fp:contains-token($last/@class, 'sep'))
                         then $part[position() lt last()]
                         else $part"/>
   <xsl:variable name="part" select="string-join($part, '')"/>
@@ -128,7 +128,7 @@
                 select="h:span[@class='number']/node()"/>
   <xsl:variable name="last" select="$part[last()]"/>
   <xsl:variable name="part"
-                select="if ($last/self::h:span and contains-token($last/@class, 'sep'))
+                select="if ($last/self::h:span and fp:contains-token($last/@class, 'sep'))
                         then $part[position() lt last()]
                         else $part"/>
   <xsl:variable name="part" select="string-join($part, '')"/>
@@ -161,11 +161,11 @@
   </xsl:if>
 </xsl:template>
 
-<xsl:template match="h:p[contains-token(@class, 'bibliomixed')]" mode="xreftext">
+<xsl:template match="h:p[fp:contains-token(@class, 'bibliomixed')]" mode="xreftext">
   <xsl:choose>
-    <xsl:when test="h:span[contains-token(@class, 'abbrev')]">
+    <xsl:when test="h:span[fp:contains-token(@class, 'abbrev')]">
       <xreftext>
-        <xsl:apply-templates select="(h:span[contains-token(@class, 'abbrev')])[1]/node()"
+        <xsl:apply-templates select="(h:span[fp:contains-token(@class, 'abbrev')])[1]/node()"
                              mode="cleanup"/>
       </xreftext>
     </xsl:when>
@@ -175,24 +175,24 @@
   </xsl:choose>
 </xsl:template>
 
-<xsl:template match="h:div[contains-token(@class, 'refentry')]" mode="xreftext">
+<xsl:template match="h:div[fp:contains-token(@class, 'refentry')]" mode="xreftext">
   <xreftext>
-    <xsl:apply-templates select="(.//h:span[contains-token(@class, 'refname')])[1]/node()"
+    <xsl:apply-templates select="(.//h:span[fp:contains-token(@class, 'refname')])[1]/node()"
                              mode="cleanup"/>
   </xreftext>
 </xsl:template>
 
-<xsl:template match="h:*[contains-token(@class, 'informalfigure')]
-                     |h:*[contains-token(@class, 'informalexample')]
-                     |h:*[contains-token(@class, 'informalequation')]
-                     |h:*[contains-token(@class, 'informaltable')]"
+<xsl:template match="h:*[fp:contains-token(@class, 'informalfigure')]
+                     |h:*[fp:contains-token(@class, 'informalexample')]
+                     |h:*[fp:contains-token(@class, 'informalequation')]
+                     |h:*[fp:contains-token(@class, 'informaltable')]"
               mode="xreftext">
   <!-- have no xreftext -->
 </xsl:template>
 
 <xsl:template match="h:header" mode="xreftext">
   <xsl:variable name="title"
-                select="h:h1|h:h2|h:h3|h:h4|h:h5|h:div[contains-token(@class,'title')]"/>
+                select="h:h1|h:h2|h:h3|h:h4|h:h5|h:div[fp:contains-token(@class,'title')]"/>
   <xsl:choose>
     <xsl:when test="$title">
       <xsl:apply-templates select="$title[1]/node()" mode="cleanup"/>

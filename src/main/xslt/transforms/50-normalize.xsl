@@ -125,8 +125,8 @@
   </xsl:choose>
 </xsl:function>
 
-<xsl:template match="db:bibliomixed[ancestor::db:bibliography[contains-token(@role, 'auto')]]
-                     |db:biblioentry[ancestor::db:bibliography[contains-token(@role, 'auto')]]"
+<xsl:template match="db:bibliomixed[ancestor::db:bibliography[fp:contains-token(@role, 'auto')]]
+                     |db:biblioentry[ancestor::db:bibliography[fp:contains-token(@role, 'auto')]]"
               priority="10">
   <xsl:if test="fp:cited(.)">
     <xsl:next-match/>
@@ -213,7 +213,7 @@
   </xsl:call-template>
 </xsl:template>
 
-<xsl:template match="db:glossary[contains-token(@role, 'auto')]">
+<xsl:template match="db:glossary[fp:contains-token(@role, 'auto')]">
   <!-- Locate all the external glossaries -->
   <xsl:variable name="glossaries"
                 select="f:available-glossaries(., $glossary-collection)"/>
@@ -271,7 +271,7 @@
   </xsl:call-template>
 </xsl:template>
 
-<xsl:template match="db:bibliography[contains-token(@role, 'auto')]">
+<xsl:template match="db:bibliography[fp:contains-token(@role, 'auto')]">
   <!-- Locate all the external bibliographies -->
   <xsl:variable name="bibl-uris" as="xs:string*">
     <xsl:sequence select="f:pi(root(.)/*, 'bibliography-collection')"/>

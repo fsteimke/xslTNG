@@ -20,8 +20,8 @@
 
 <xsl:template match="h:script
                      | h:meta[not(@name)]
-                     | h:nav[contains-token(@class, 'top')
-                             or contains-token(@class, 'bottom')]"/>
+                     | h:nav[fp:contains-token(@class, 'top')
+                             or fp:contains-token(@class, 'bottom')]"/>
 
 <xsl:template match="h:header[ancestor::h:header]">
   <div class="header">

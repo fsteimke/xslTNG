@@ -57,7 +57,7 @@
 
   <xsl:variable name="footnotes" as="element(h:db-footnote)*">
     <xsl:for-each select=".//h:db-footnote[not(ancestor::h:table)
-                                           or ancestor::h:table[contains-token(@class,'verbatim')]]">
+                                           or ancestor::h:table[fp:contains-token(@class,'verbatim')]]">
       <xsl:variable name="chunk" select="ancestor::*[@db-chunk][1]"/>
       <xsl:if test="$chunk is $self">
         <xsl:sequence select="."/>
@@ -93,7 +93,7 @@
   <xsl:variable name="prev" as="element()?">
     <xsl:choose>
       <xsl:when test="$annotation-style = 'javascript'
-                      and $prev/*[contains-token(@class, 'annotation-body')]">
+                      and $prev/*[fp:contains-token(@class, 'annotation-body')]">
         <xsl:sequence select="()"/>
       </xsl:when>
       <xsl:otherwise>
@@ -108,7 +108,7 @@
   <xsl:variable name="next" as="element()?">
     <xsl:choose>
       <xsl:when test="$annotation-style = 'javascript'
-                      and $next/*[contains-token(@class, 'annotation-body')]">
+                      and $next/*[fp:contains-token(@class, 'annotation-body')]">
         <xsl:sequence select="()"/>
       </xsl:when>
       <xsl:otherwise>
@@ -137,8 +137,8 @@
                   xmlns:mml="http://www.w3.org/1998/Math/MathML"/>
     <xsl:variable name="role"
                   select="exists($v:mathml-js-roles)
-                          and exists(//h:span[contains-token(@class, 'mathphrase')
-                                     and contains-token(@class, $v:mathml-js-roles)])"/>
+                          and exists(//h:span[fp:contains-token(@class, 'mathphrase')
+                                     and fp:contains-token(@class, $v:mathml-js-roles)])"/>
     <xsl:if test="$mathml or $role">
       <xsl:apply-templates select="/h:html/h:db-mathml-script/*">
         <xsl:with-param name="rootbaseuri" select="$rbu"/>
@@ -187,7 +187,7 @@
          and highlight.js manages the selection correctly anyway. -->
     <xsl:if test="f:is-true($verbatim-embellishments)
                   and f:global-syntax-highlighter($docbook) = 'pygments'
-                  and .//h:div[contains-token(@class, 'pre-wrap')]">
+                  and .//h:div[fp:contains-token(@class, 'pre-wrap')]">
       <xsl:apply-templates select="/h:html/h:db-copy-verbatim-script/*">
         <xsl:with-param name="rootbaseuri" select="$rbu"/>
         <xsl:with-param name="chunkbaseuri" select="$cbu"/>
@@ -417,7 +417,7 @@
 
   <xsl:choose>
     <xsl:when test="ends-with(@href, 'css/pygments.css')
-                    and empty(../..//h:div[contains-token(@class, 'highlight')])">
+                    and empty(../..//h:div[fp:contains-token(@class, 'highlight')])">
       <!-- We don't need this one. Note that this is a slightly
            under-zealous test. It will preserve the pygments
            stylesheet in all of the ancestors of a chunk that
@@ -515,7 +515,7 @@
         </xsl:copy>
       </span>
     </xsl:when>
-    <xsl:when test="contains-token(@class, 'annomark')">
+    <xsl:when test="fp:contains-token(@class, 'annomark')">
       <!-- Annotations are special, they're always local references because
            we'll copy the relevant annotations into this chunk. -->
       <xsl:if test="'intra-chunk-refs' = $v:debug">
@@ -574,8 +574,8 @@
      nodes inside this h:a, then we'll try to renumber the footnote. -->
 <xsl:template match="text()[$v:chunk-renumber-footnotes
                             and parent::h:a
-                                /parent::h:sup[contains-token(@class, 'footnote-number')
-                                               and not(contains-token(@class, 'table-footnote'))
+                                /parent::h:sup[fp:contains-token(@class, 'footnote-number')
+                                               and not(fp:contains-token(@class, 'table-footnote'))
                                                and @db-footnote]
                             and empty(preceding-sibling::node())
                             and empty(following-sibling::node())]"
@@ -673,7 +673,7 @@
     <xsl:apply-templates select="@*"/>
     <!-- annotations inside the constructed db-bfs div are moved to the top
          so ignore them when we're *inside* the db-bfs div -->
-    <xsl:if test="not(contains-token(@class, 'db-bfs'))">
+    <xsl:if test="not(fp:contains-token(@class, 'db-bfs'))">
       <xsl:sequence select="h:db-annotation-marker[@placement='before']/node()
                             |h:div[@class='db-bfs']/h:db-annotation-marker[@placement='before']/node()"/>
     </xsl:if>
@@ -698,7 +698,7 @@
   <xsl:variable name="new-number" as="xs:string">
     <xsl:number from="*[@db-chunk]"
                 count="h:db-footnote[not(ancestor::h:table)
-                                     or ancestor::h:table[contains-token(@class, 'verbatim')]]"
+                                     or ancestor::h:table[fp:contains-token(@class, 'verbatim')]]"
                 level="any"/>
   </xsl:variable>
   <xsl:sequence select="fp:footnote-mark(xs:integer($new-number), $footnote-numeration)"/>
@@ -791,11 +791,11 @@
   <xsl:param name="chunk" as="element()?"/>
 
   <xsl:choose>
-    <xsl:when test="$chunk/h:div[contains-token(@class, 'refnamediv')]">
+    <xsl:when test="$chunk/h:div[fp:contains-token(@class, 'refnamediv')]">
       <!-- refentry chunks are special -->
       <xsl:apply-templates
-          select="(($chunk/h:div[contains-token(@class, 'refnamediv')])[1]
-                   //h:span[contains-token(@class, 'refname')])[1]/node()"
+          select="(($chunk/h:div[fp:contains-token(@class, 'refnamediv')])[1]
+                   //h:span[fp:contains-token(@class, 'refname')])[1]/node()"
           mode="m:chunk-title"/>
     </xsl:when>
     <xsl:otherwise>

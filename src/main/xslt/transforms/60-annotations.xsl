@@ -3,6 +3,7 @@
                 xmlns:array="http://www.w3.org/2005/xpath-functions/array"
                 xmlns:db="http://docbook.org/ns/docbook"
                 xmlns:f="http://docbook.org/ns/docbook/functions"
+		xmlns:fp="http://docbook.org/ns/docbook/functions/private"
                 xmlns:ghost="http://docbook.org/ns/docbook/ephemeral"
                 xmlns:map="http://www.w3.org/2005/xpath-functions/map"
                 xmlns:mp="http://docbook.org/ns/docbook/modes/private"
@@ -146,8 +147,8 @@
 
   <xsl:variable name="before-annotations" as="element(db:annotation)*">
     <xsl:for-each select="$annotations">
-      <xsl:if test="($annotation-placement = 'before' and not(contains-token(@role, 'after')))
-                    or contains-token(@role, 'before')">
+      <xsl:if test="($annotation-placement = 'before' and not(fp:contains-token(@role, 'after')))
+                    or fp:contains-token(@role, 'before')">
         <xsl:sequence select="."/>
       </xsl:if>
     </xsl:for-each>
@@ -181,8 +182,8 @@
   <xsl:variable name="before-annotations" as="element(db:annotation)*">
     <xsl:for-each select="$annotations">
       <xsl:if test="$annotation-placement = 'before'
-                    or (contains-token(@role, 'before')
-                        and not(contains-token(@role, 'after')))">
+                    or (fp:contains-token(@role, 'before')
+                        and not(fp:contains-token(@role, 'after')))">
         <xsl:sequence select="."/>
       </xsl:if>
     </xsl:for-each>

@@ -356,7 +356,7 @@
 <!-- ============================================================ -->
 
 <xsl:template match="db:variablelist[f:is-true($variablelist-panelset)
-                                     and contains-token(@role, 'panelset')]">
+                                     and fp:contains-token(@role, 'panelset')]">
   <div class="panelset variablelist">
     <xsl:apply-templates select="." mode="m:attributes"/>
     <xsl:apply-templates select="." mode="m:generate-titlepage"/>
