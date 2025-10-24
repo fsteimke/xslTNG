@@ -391,13 +391,15 @@
 <!-- ===================================================================================
 |    fn:contains-token is not available in Oxygen 26.1
 ===================================================================================== -->
-<xsl:function name="fp:contains-token" use-when="function-available('contains-token',2)">
+<xsl:function name="fp:contains-token" use-when="function-available('contains-token', 2)"
+  visibility="public">
   <xsl:param name="input" as="xs:string?"/>
   <xsl:param name="token" as="xs:string"/>
   <xsl:sequence select="contains-token($input, $token)"/>
 </xsl:function>  
   
-<xsl:function name="fp:contains-token" use-when="not(function-available('contains-token', 2))">
+<xsl:function name="fp:contains-token" use-when="not(function-available('contains-token', 2))"
+  visibility="public">
   <xsl:param name="input" as="xs:string?"/>
   <xsl:param name="token" as="xs:string"/>
   <xsl:sequence select="normalize-space($token) = tokenize($input,'\s+/>"/>
