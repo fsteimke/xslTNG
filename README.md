@@ -1,4 +1,11 @@
-# DocBook xslTNG
+
+# DocBook xslTNG - Oxygen patch
+
+The only difference between the regular version and this *Oxyen patch*
+is the use of the `fp:contains-token#2` function, defined in
+`standalone-functions.xsl`. We had to define it, because there is an
+issue with the standard `fn:contains-token#2` function in Oxygen
+26.1. *Frank Steimke, October 2025.*
 
 This is *The Next Generation* of DocBook stylesheets in XSLT. It is a
 complete reimplementation of the stylesheets for transforming
