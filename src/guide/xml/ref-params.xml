@@ -2646,7 +2646,15 @@ See <varname>v:mediaobject-output-base-uri</varname>.
   </refnamediv>
 <refsection>
 <title>Description</title>
-<para>FIXME:</para>
+<para>If <parameter>mediaobject-output-paths</parameter> <glossterm>is true</glossterm>,
+media object locations are assumed to be correct, relative to the resource base URI.
+For example, if the <tag class="attribute">fileref</tag> is <literal>path/to/image.svg</literal>,
+that relative path will be preserved as the relative location against the resource base URI
+in the output.</para>
+<para>If this parameter is false, then the path component of media objects is discarded.
+All media objects are assumed to be in the location identified by the resource base URI.
+In other words, <literal>path/to/image.svg</literal> will be treated as if it was simply
+<literal>image.svg</literal>.</para>
 </refsection>
 </refentry>
 
@@ -6059,6 +6067,45 @@ up the remaining width according to the relative widths.)</para>
 <para>The computation involves floating point calculations and may
 have rounding errors. Setting the threshold to 1 (rather than 0) reduces
 false positives.</para>
+
+</refsection>
+</refentry>  
+
+<refentry>
+  <refmeta>
+    <fieldsynopsis>
+      <type>xs:string</type>
+      <varname>mediaobject-percentage-of-intrinsic-size</varname>
+      <initializer>'false'</initializer>
+    </fieldsynopsis>
+    <refmiscinfo class="version">2.7.0</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refpurpose>Compute media object percentage sizes based on intrinsic size</refpurpose>
+  </refnamediv>
+<refsection>
+<title>Description</title>
+
+<para>When the <tag class="attribute">width</tag> or <tag
+class="attribute">depth</tag> of a media object is specified as a percentage,
+it is supposed to be a percentage of the available space. All versions of
+the <citetitle>DocBook xslTNG Stylesheets</citetitle> before version 2.7.0
+incorrectly calculate percentages against the intrinsic size of the
+image.</para>
+
+<para>This has been corrected in 2.7.0, but the previous, incorrect behavior
+can be preserved by setting <parameter>mediaobject-percentage-of-intrinsic-size</parameter>
+to <literal>true</literal>.</para>
+
+<note>
+<para>Percentages are problematic in any event as the stylesheets don’t usually know the
+actual width that will be available when the document is formatted. Most often, this
+results in a calculation against the <parameter>image-nominal-height</parameter> and
+<parameter>image-nominal-width</parameter>.</para>
+</note>
+
+<para>Available widths can sometimes be calculated, for example in CALS tables, but
+depth percentages are always resolved against the nominal height.</para> 
 
 </refsection>
 </refentry>  
